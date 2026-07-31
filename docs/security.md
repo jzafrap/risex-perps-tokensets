@@ -19,9 +19,15 @@ session key needs **two** signatures, not one — see [Lifecycle](#lifecycle).
 ## Lifecycle
 
 1. **Connect** wallet.
-2. **Approve session key** (`POST /v1/auth/register-signer`) — the app generates the session
-   keypair, has it **self-sign** a `VerifySigner` message (proving the new key consents to being
-   registered), then asks your wallet to sign a `RegisterSigner` message authorizing it. Both
+2. **Approve session key** (`POST /v1/auth/register-signer`) — the app **switches (or adds, if
+   not yet configured) your wallet's active network to RISE Chain first**, then generates the
+   session keypair, has it **self-sign** a `VerifySigner` message (proving the new key consents
+   to being registered), then asks your wallet to sign a `RegisterSigner` message authorizing it.
+   The chain switch is required because MetaMask (and similar wallets) validate that a
+   `signTypedData` request's `domain.chainId` matches the wallet's currently active network and
+   reject the request otherwise (`"chainId should be same as current chainId"`) — found while
+   testing locally against mainnet; the reference project's assumption that "the wallet's active
+   network doesn't matter for signing" (true for Hyperliquid) does not hold here. Both
    signatures use RiseX's EIP-712 domain for the active network. The session is set to expire
    ~30 days out.
 3. **Trade** — every order, leverage change, and close is signed locally by the session key, no
