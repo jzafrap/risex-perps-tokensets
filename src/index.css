@@ -85,6 +85,25 @@ input[type="number"] {
   color: #f85149;
 }
 
+/* Funds balance */
+.funds-balance {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  margin: 1rem 0;
+}
+.funds-balance-label {
+  color: #8b949e;
+  font-size: 0.85rem;
+}
+.funds-balance-value {
+  font-weight: 650;
+  font-size: 1.05rem;
+}
+
 /* Wallet connect */
 .wallet-connect {
   display: flex;

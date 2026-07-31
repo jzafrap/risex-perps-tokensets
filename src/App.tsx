@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useAccount } from "wagmi";
 import { AgentApproval } from "./components/AgentApproval";
+import { FundsBalance } from "./components/FundsBalance";
 import { NetworkBanner } from "./components/NetworkBanner";
 import { PortfolioDashboard } from "./components/PortfolioDashboard";
 import { SelectedBasket } from "./components/SelectedBasket";
@@ -86,6 +87,7 @@ export default function App() {
       <main className="app-main">
         {isConnected && address ? (
           <>
+            <FundsBalance address={address} />
             <AgentApproval />
             <ComposeTokenset onCreate={create} />
             <TokensetList
