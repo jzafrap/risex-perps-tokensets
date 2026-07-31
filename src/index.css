@@ -286,9 +286,32 @@ input[type="number"] {
 .leverage-badge--long {
   color: #7ee787;
 }
-.lot-legs {
-  list-style: none;
-  padding: 0;
+.lot-legs-table {
+  width: 100%;
+  border-collapse: collapse;
   font-size: 0.85rem;
+  margin: 0.5rem 0;
+}
+.lot-legs-table th {
+  text-align: left;
   color: #8b949e;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.3rem 0.6rem;
+  border-bottom: 1px solid #30363d;
+}
+.lot-legs-table td {
+  padding: 0.35rem 0.6rem;
+  border-bottom: 1px solid #21262d;
+}
+.lot-legs-table tbody tr:last-child td {
+  border-bottom: none;
+}
+.pnl-positive {
+  color: #7ee787;
+}
+.pnl-negative {
+  color: #f85149;
 }

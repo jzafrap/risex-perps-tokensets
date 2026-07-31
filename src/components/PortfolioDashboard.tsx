@@ -98,15 +98,33 @@ export function PortfolioDashboard({
               {formatUsd(lotTotals.pnlUsd)} ({formatPct(lotTotals.pnlPct)})
             </span>
           </div>
-          <ul className="lot-legs">
-            {legs.map((leg) => (
-              <li key={leg.marketId}>
-                {leg.symbol}: {leg.qtyRemaining} @ {formatUsd(leg.avgEntryPrice)} →{" "}
-                {formatUsd(leg.currentPrice)} ({formatPct(leg.pnlPct)})
-                {leg.priceUnconfirmed && <em> (approx. cost basis)</em>}
-              </li>
-            ))}
-          </ul>
+          <table className="lot-legs-table">
+            <thead>
+              <tr>
+                <th>Market</th>
+                <th>Qty remaining</th>
+                <th>Entry</th>
+                <th>Current</th>
+                <th>P&amp;L</th>
+              </tr>
+            </thead>
+            <tbody>
+              {legs.map((leg) => (
+                <tr key={leg.marketId}>
+                  <td>{leg.symbol}</td>
+                  <td>{leg.qtyRemaining}</td>
+                  <td>
+                    {formatUsd(leg.avgEntryPrice)}
+                    {leg.priceUnconfirmed && <span title="Fill price unconfirmed — this is the submitted limit price, a conservative estimate"> *</span>}
+                  </td>
+                  <td>{formatUsd(leg.currentPrice)}</td>
+                  <td className={leg.pnlUsd !== null ? (leg.pnlUsd >= 0 ? "pnl-positive" : "pnl-negative") : undefined}>
+                    {leg.pnlUsd !== null ? `${formatUsd(leg.pnlUsd)} (${formatPct(leg.pnlPct)})` : "—"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
           <SellForm lot={lot} markets={markets} masterAddress={masterAddress} agentApproved={agentApproved} onSold={onSold} />
         </div>
       ))}
