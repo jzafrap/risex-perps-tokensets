@@ -87,8 +87,22 @@ function advanceNonce(nonce: NonceState, by: number): NonceState {
   return { nonce_anchor: nonce.nonce_anchor, current_bitmap_index: nonce.current_bitmap_index + by };
 }
 
+/** RiseX rate-limits `/v1/account/leverage` to 1 request/second (confirmed
+ * live: "rate limited: 1 request per second for update_leverage" when a
+ * tokenset with 2+ markets set leverage back-to-back). Not documented
+ * anywhere in advance — found the same way as the two encoding bugs, by a
+ * real error during live testing. This margin (1100ms) is a guess at a safe
+ * gap, not a confirmed exact window; tighten only if verified. */
+const LEVERAGE_CALL_MIN_GAP_MS = 1100;
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 /** Set leverage for every unique market in the plan before opening. Shared by
- * buy and short — leverage is a risk setting keyed by market, not direction. */
+ * buy and short — leverage is a risk setting keyed by market, not direction.
+ * Calls are throttled sequentially (see `LEVERAGE_CALL_MIN_GAP_MS`) since
+ * RiseX rate-limits this specific action tighter than its general REST limit. */
 async function setLeverageForPlan(
   plan: BuyPlan,
   leverage: number,
@@ -96,8 +110,9 @@ async function setLeverageForPlan(
   masterAddress: Address,
 ): Promise<void> {
   const uniqueMarketIds = [...new Set(plan.legs.map((l) => l.marketId))];
-  for (const marketId of uniqueMarketIds) {
-    await apiUpdateLeverage(Number(marketId), leverage, signerAccount, masterAddress);
+  for (let i = 0; i < uniqueMarketIds.length; i++) {
+    if (i > 0) await sleep(LEVERAGE_CALL_MIN_GAP_MS);
+    await apiUpdateLeverage(Number(uniqueMarketIds[i]), leverage, signerAccount, masterAddress);
   }
 }
 
