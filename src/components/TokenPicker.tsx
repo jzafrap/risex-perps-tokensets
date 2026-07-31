@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useMarkets } from "../hooks/useMarkets";
 import { volumeTier } from "../lib/liquidity";
-import { formatPct, formatPrice, formatUsdCompact } from "../lib/format";
+import { computeChangePct24h, formatPct, formatPrice, formatUsdCompact } from "../lib/format";
 import type { Market } from "../lib/risex";
 import { LiquidityBadge } from "./LiquidityBadge";
 
@@ -55,7 +55,9 @@ export function TokenPicker({
             {filtered.map((m) => {
               const tier = volumeTier(Number(m.quote_volume_24h));
               const isSelected = selected.has(m.market_id);
-              const change = Number(m.change_24h);
+              // change_24h is an ABSOLUTE price delta, not a percentage —
+              // see lib/format.ts's computeChangePct24h doc comment.
+              const changePct = computeChangePct24h(Number(m.last_price), Number(m.change_24h));
               const inputId = `market-${m.market_id}`;
               return (
                 <tr key={m.market_id}>
@@ -71,8 +73,8 @@ export function TokenPicker({
                     <label htmlFor={inputId}>{m.display_name}</label>
                   </td>
                   <td>{formatPrice(Number(m.mark_price))}</td>
-                  <td className={change >= 0 ? "pnl-positive" : "pnl-negative"}>
-                    {formatPct(change)}
+                  <td className={changePct !== null && changePct >= 0 ? "pnl-positive" : "pnl-negative"}>
+                    {formatPct(changePct)}
                   </td>
                   <td>{formatUsdCompact(Number(m.quote_volume_24h))}</td>
                   <td>
