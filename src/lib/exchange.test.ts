@@ -149,7 +149,7 @@ describe("updateLeverage", () => {
     vi.unstubAllGlobals();
   });
 
-  it("posts the leverage update with a signed permit", async () => {
+  it("posts the leverage update with a signed permit under the 'permit_params' field (not 'permit' — this endpoint's field name differs from /v1/orders/place, confirmed against the live API's own error message)", async () => {
     await updateLeverage(2, 5n, SIGNER, MASTER);
 
     const fetchFn = fetch as unknown as ReturnType<typeof vi.fn>;
@@ -157,6 +157,7 @@ describe("updateLeverage", () => {
     const body = JSON.parse(call![1].body as string);
     expect(body.market_id).toBe(2);
     expect(body.leverage).toBe("5");
-    expect(body.permit.account).toBe(MASTER);
+    expect(body.permit_params.account).toBe(MASTER);
+    expect(body.permit).toBeUndefined();
   });
 });

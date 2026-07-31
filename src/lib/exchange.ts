@@ -170,7 +170,20 @@ export async function placeOrder(
   });
 }
 
-/** `POST /v1/account/leverage` — signs and submits a leverage-update permit. */
+/**
+ * `POST /v1/account/leverage` — signs and submits a leverage-update permit.
+ *
+ * NOTE: unlike `placeOrder`, this endpoint's signed-permit field is named
+ * `permit_params`, not `permit`. Confirmed two ways: the live API's own error
+ * ("permit_params is required") when a user hit this in testing, and
+ * developer.rise.trade's OpenAPI-derived reference for this endpoint
+ * specifically. `risex-client`'s source (the basis for this file's permit
+ * logic) uses `permit` here too — this is a real bug in that community SDK,
+ * not just a naming choice; the API is inconsistent field-naming across
+ * endpoints (`/v1/orders/place` really does use `permit`, confirmed
+ * separately), so don't assume this generalizes without checking each
+ * endpoint's own reference page.
+ */
 export async function updateLeverage(
   marketId: number,
   leverage: bigint,
@@ -179,11 +192,11 @@ export async function updateLeverage(
   nonce?: NonceState,
 ): Promise<unknown> {
   const hash = encodeLeverage(marketId, leverage);
-  const permit = await createPermitForHash(hash, signerAccount, masterAddress, nonce);
+  const permit_params = await createPermitForHash(hash, signerAccount, masterAddress, nonce);
 
   return apiPost("/v1/account/leverage", {
     market_id: marketId,
     leverage: String(leverage),
-    permit,
+    permit_params,
   });
 }
