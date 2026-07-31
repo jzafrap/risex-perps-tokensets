@@ -105,8 +105,8 @@ describe("executeBuy / executeShort", () => {
     });
 
     expect(updateLeverage).toHaveBeenCalledTimes(2);
-    expect(updateLeverage).toHaveBeenCalledWith(1, 3n, SIGNER, MASTER);
-    expect(updateLeverage).toHaveBeenCalledWith(2, 3n, SIGNER, MASTER);
+    expect(updateLeverage).toHaveBeenCalledWith(1, 3, SIGNER, MASTER);
+    expect(updateLeverage).toHaveBeenCalledWith(2, 3, SIGNER, MASTER);
   });
 
   it("aborts before placing any order when setting leverage fails (money-safety: nothing executes on a failed pre-condition)", async () => {

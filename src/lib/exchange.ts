@@ -186,7 +186,7 @@ export async function placeOrder(
  */
 export async function updateLeverage(
   marketId: number,
-  leverage: bigint,
+  leverage: number,
   signerAccount: PrivateKeyAccount,
   masterAddress: Address,
   nonce?: NonceState,

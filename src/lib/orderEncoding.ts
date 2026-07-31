@@ -129,11 +129,25 @@ export function encodeOrder(p: OrderParams, isErc1271 = false): `0x${string}` {
   return keccak256(encoded);
 }
 
-/** `hash = keccak256(abi.encode(uint256(marketId), uint128(leverage)))`. */
-export function encodeLeverage(marketId: number, leverage: bigint): `0x${string}` {
+const ACTION_UPDATE_LEVERAGE_HASH = keccak256(toHex("RISE_PERPS_UPDATE_LEVERAGE_V1"));
+
+/**
+ * `hash = keccak256(abi.encode(actionTypeHash, uint16(marketId), uint8(leverage)))`.
+ *
+ * CORRECTED from `risex-client`'s version (`uint256(marketId) + uint128(leverage)`,
+ * with no action-type-hash prefix at all) — that was a real bug in the community
+ * SDK, not a stylistic difference. Found live: a real "permit signature mismatch"
+ * error on `/v1/account/leverage` (the signature recovered to a different
+ * address than the actual signer, because the signed hash didn't match what the
+ * server independently reconstructs for the same action). The correct formula
+ * is sourced from developer.rise.trade's documented reference for this specific
+ * endpoint, not re-derived from the SDK — see docs/tasks.md task 6's addendum.
+ * `leverage` must be an integer 1-255 (uint8) per that same reference.
+ */
+export function encodeLeverage(marketId: number, leverage: number): `0x${string}` {
   const encoded = encodeAbiParameters(
-    [{ type: "uint256" }, { type: "uint128" }],
-    [BigInt(marketId), leverage],
+    [{ type: "bytes32" }, { type: "uint16" }, { type: "uint8" }],
+    [ACTION_UPDATE_LEVERAGE_HASH, marketId, leverage],
   );
   return keccak256(encoded);
 }

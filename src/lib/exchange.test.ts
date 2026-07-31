@@ -150,7 +150,7 @@ describe("updateLeverage", () => {
   });
 
   it("posts the leverage update with a signed permit under the 'permit_params' field (not 'permit' — this endpoint's field name differs from /v1/orders/place, confirmed against the live API's own error message)", async () => {
-    await updateLeverage(2, 5n, SIGNER, MASTER);
+    await updateLeverage(2, 5, SIGNER, MASTER);
 
     const fetchFn = fetch as unknown as ReturnType<typeof vi.fn>;
     const call = fetchFn.mock.calls.find(([url]: string[]) => url.endsWith("/v1/account/leverage"));

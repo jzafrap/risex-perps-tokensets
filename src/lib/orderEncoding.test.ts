@@ -73,16 +73,33 @@ describe("encodeOrder — cross-checked against risex-client's ethers implementa
   });
 });
 
-describe("encodeLeverage — cross-checked against risex-client's ethers implementation", () => {
+/**
+ * `encodeLeverage`'s formula was CORRECTED after a live "permit signature
+ * mismatch" error on `/v1/account/leverage` (docs/tasks.md task 6 addendum):
+ * `risex-client`'s version (`uint256(marketId) + uint128(leverage)`, no
+ * action-type-hash prefix) was a real bug, not just a style difference. These
+ * fixtures were regenerated from developer.rise.trade's documented formula
+ * (`keccak256(abi.encode(keccak256("RISE_PERPS_UPDATE_LEVERAGE_V1"),
+ * uint16(marketId), uint8(leverage)))`), cross-checked with an independent
+ * `ethers`-based script (temporary, removed after use) — not trusted from the
+ * SDK a second time.
+ */
+describe("encodeLeverage — cross-checked against the documented formula (not risex-client's, which was wrong)", () => {
   it("matches the reference hash for (marketId=2, leverage=5)", () => {
-    expect(encodeLeverage(2, 5n)).toBe(
-      "0x89832631fb3c3307a103ba2c84ab569c64d6182a18893dcd163f0f1c2090733a",
+    expect(encodeLeverage(2, 5)).toBe(
+      "0xb783755ca5686d91d078f74a1daa509d835e68b234621a9a8979119b815834c3",
     );
   });
 
   it("matches the reference hash for (marketId=1, leverage=10)", () => {
-    expect(encodeLeverage(1, 10n)).toBe(
-      "0xbbc70db1b6c7afd11e79c0fb0051300458f1a3acb8ee9789d9b6b26c61ad9bc7",
+    expect(encodeLeverage(1, 10)).toBe(
+      "0xc358a04124587a5809f1d6ddf57fc2ecb3d1691fd0a76a930c0518e961081880",
+    );
+  });
+
+  it("matches the reference hash for (marketId=5, leverage=3)", () => {
+    expect(encodeLeverage(5, 3)).toBe(
+      "0x3a5efe4f51a72cada8fac44ae414a474ff1791735fd4353a7ad7529da13c5437",
     );
   });
 });

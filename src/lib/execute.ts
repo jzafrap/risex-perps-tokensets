@@ -97,7 +97,7 @@ async function setLeverageForPlan(
 ): Promise<void> {
   const uniqueMarketIds = [...new Set(plan.legs.map((l) => l.marketId))];
   for (const marketId of uniqueMarketIds) {
-    await apiUpdateLeverage(Number(marketId), BigInt(leverage), signerAccount, masterAddress);
+    await apiUpdateLeverage(Number(marketId), leverage, signerAccount, masterAddress);
   }
 }
 
