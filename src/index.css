@@ -1,0 +1,275 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+  background: #0d1117;
+  color: #e6edf3;
+}
+
+.app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.app-footer {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #30363d;
+  color: #8b949e;
+  font-size: 0.85rem;
+}
+
+button {
+  cursor: pointer;
+  border-radius: 6px;
+  border: 1px solid #30363d;
+  background: #21262d;
+  color: #e6edf3;
+  padding: 0.4rem 0.8rem;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input[type="text"],
+input[type="number"] {
+  border-radius: 6px;
+  border: 1px solid #30363d;
+  background: #0d1117;
+  color: #e6edf3;
+  padding: 0.4rem 0.6rem;
+}
+
+.error {
+  color: #f85149;
+}
+
+.warning {
+  color: #d29922;
+}
+
+.form-message {
+  color: #7ee787;
+}
+
+/* Network banner */
+.network-banner {
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.network-banner--testnet {
+  background: #3d2f00;
+  color: #d29922;
+}
+.network-banner--mainnet {
+  background: #2d0e0e;
+  color: #f85149;
+}
+
+/* Wallet connect */
+.wallet-connect {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.wallet-address {
+  font-family: monospace;
+}
+
+/* Agent approval */
+.agent-approval {
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 0.8rem;
+  margin: 1rem 0;
+}
+.agent-approval--approved {
+  border-color: #238636;
+}
+
+/* Liquidity badges */
+.liq-badge {
+  border-radius: 4px;
+  padding: 0.1rem 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.liq-high {
+  background: #1a4d2e;
+  color: #7ee787;
+}
+.liq-medium {
+  background: #3d2f00;
+  color: #d29922;
+}
+.liq-low {
+  background: #3c1414;
+  color: #f85149;
+}
+.liq-detail {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.8rem;
+  color: #8b949e;
+}
+
+/* Token picker */
+.token-picker {
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 0.8rem;
+}
+.token-picker-list {
+  max-height: 320px;
+  overflow-y: auto;
+  margin-top: 0.5rem;
+}
+.token-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto auto;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid #21262d;
+}
+.token-row-name {
+  font-weight: 600;
+}
+
+/* Selected basket */
+.selected-basket {
+  list-style: none;
+  padding: 0;
+}
+.selected-basket li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.3rem 0;
+}
+.selected-basket-empty {
+  color: #8b949e;
+}
+
+/* Leverage selector */
+.leverage-selector {
+  display: flex;
+  gap: 0.3rem;
+}
+.leverage-btn.active {
+  background: #238636;
+  border-color: #238636;
+}
+
+/* Tokenset list */
+.tokenset-card {
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+.tokenset-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.tokenset-chips {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin: 0.4rem 0;
+}
+.tokenset-chip {
+  background: #21262d;
+  border-radius: 4px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.8rem;
+}
+.tokenset-list-empty {
+  color: #8b949e;
+}
+
+/* Buy/Short/Sell forms */
+.buy-form,
+.short-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+.sell-form {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Portfolio dashboard */
+.portfolio-dashboard {
+  margin-top: 1.5rem;
+}
+.portfolio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.portfolio-totals {
+  display: flex;
+  gap: 1rem;
+  margin: 0.5rem 0;
+  font-weight: 600;
+}
+.portfolio-empty {
+  color: #8b949e;
+}
+.lot-card {
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+.lot-card-header {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.leverage-badge {
+  border-radius: 4px;
+  padding: 0.1rem 0.4rem;
+  font-size: 0.75rem;
+  background: #21262d;
+}
+.leverage-badge--short {
+  color: #f85149;
+}
+.leverage-badge--long {
+  color: #7ee787;
+}
+.lot-legs {
+  list-style: none;
+  padding: 0;
+  font-size: 0.85rem;
+  color: #8b949e;
+}
